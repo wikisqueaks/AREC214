@@ -29,7 +29,7 @@
 </head>
 <body>
     <div id="container">
-        <img id="zoomable-image" src="img/flowchart_v03.png" alt="Fundamental Relationships in Linear Algebra">
+        <img id="zoomable-image" src="img/flowchart.png" alt="Fundamental Relationships in Linear Algebra">
     </div>
 
     <script>
@@ -37,6 +37,9 @@
         const img = document.getElementById('zoomable-image');
         let scale = 1;
         let isZoomed = false;
+        let imgX = 0, imgY = 0;
+        let startX, startY;
+        let isDragging = false;
 
         // Wait for the image to load to get its dimensions
         img.onload = function() {
@@ -53,24 +56,73 @@
 
         container.addEventListener('click', function(e) {
             const containerRect = container.getBoundingClientRect();
-            const imgRect = img.getBoundingClientRect();
             const clickX = e.clientX - containerRect.left;
             const clickY = e.clientY - containerRect.top;
 
             if (!isZoomed) {
-                const zoomFactor = 2.5;
-                const offsetX = (clickX - containerRect.width / 2) * (zoomFactor - 1);
-                const offsetY = (clickY - containerRect.height / 2) * (zoomFactor - 1);
+                const zoomFactor = 2;
                 const translateX = (containerRect.width / 2 - clickX) * (zoomFactor - 1);
                 const translateY = (containerRect.height / 2 - clickY) * (zoomFactor - 1);
-                img.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale * zoomFactor})`;
+                imgX = translateX;
+                imgY = translateY;
+                img.style.transform = `translate(${imgX}px, ${imgY}px) scale(${scale * zoomFactor})`;
                 container.style.cursor = 'zoom-out';
             } else {
+                imgX = 0;
+                imgY = 0;
                 img.style.transform = `scale(${scale})`;
                 container.style.cursor = 'zoom-in';
             }
 
             isZoomed = !isZoomed;
+        });
+
+        container.addEventListener('mousedown', function(e) {
+            if (isZoomed) {
+                isDragging = true;
+                startX = e.clientX - imgX;
+                startY = e.clientY - imgY;
+                container.style.cursor = 'grabbing';
+            }
+        });
+
+        container.addEventListener('mousemove', function(e) {
+            if (isDragging) {
+                imgX = e.clientX - startX;
+                imgY = e.clientY - startY;
+                img.style.transform = `translate(${imgX}px, ${imgY}px) scale(${scale * 2})`;
+            }
+        });
+
+        container.addEventListener('mouseup', function() {
+            isDragging = false;
+            container.style.cursor = isZoomed ? 'zoom-out' : 'zoom-in';
+        });
+
+        container.addEventListener('mouseleave', function() {
+            isDragging = false;
+            container.style.cursor = isZoomed ? 'zoom-out' : 'zoom-in';
+        });
+
+        window.addEventListener('keydown', function(e) {
+            if (isZoomed) {
+                const moveAmount = 20;
+                switch (e.key) {
+                    case 'ArrowLeft':
+                        imgX += moveAmount;
+                        break;
+                    case 'ArrowRight':
+                        imgX -= moveAmount;
+                        break;
+                    case 'ArrowUp':
+                        imgY += moveAmount;
+                        break;
+                    case 'ArrowDown':
+                        imgY -= moveAmount;
+                        break;
+                }
+                img.style.transform = `translate(${imgX}px, ${imgY}px) scale(${scale * 2})`;
+            }
         });
     </script>
 </body>
