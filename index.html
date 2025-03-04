@@ -18,10 +18,12 @@
             align-items: center;
             overflow: hidden;
             cursor: grab;
+            position: relative;
         }
         #zoomable-image {
             transition: transform 0.2s;
-            transform-origin: center center;
+            transform-origin: top left;
+            position: absolute;
         }
     </style>
 </head>
@@ -45,7 +47,7 @@
                 } else {
                     scale /= 1.1;
                 }
-                img.style.transform = `scale(${scale}) translate(${imgX}px, ${imgY}px)`;
+                img.style.transform = `translate(${imgX}px, ${imgY}px) scale(${scale})`;
             }
         });
 
@@ -58,4 +60,21 @@
 
         container.addEventListener('mousemove', function(e) {
             if (isDragging) {
-                imgX = e.clientX ▋
+                imgX = e.clientX - startX;
+                imgY = e.clientY - startY;
+                img.style.transform = `translate(${imgX}px, ${imgY}px) scale(${scale})`;
+            }
+        });
+
+        container.addEventListener('mouseup', function() {
+            isDragging = false;
+            container.style.cursor = 'grab';
+        });
+
+        container.addEventListener('mouseleave', function() {
+            isDragging = false;
+            container.style.cursor = 'grab';
+        });
+    </script>
+</body>
+</html>
