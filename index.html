@@ -17,12 +17,12 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            cursor: grab;
+            cursor: zoom-in;
             position: relative;
         }
         #zoomable-image {
             transition: transform 0.2s;
-            transform-origin: top left;
+            transform-origin: center center;
             position: absolute;
         }
     </style>
@@ -36,8 +36,7 @@
         const container = document.getElementById('container');
         const img = document.getElementById('zoomable-image');
         let scale = 1;
-        let isDragging = false;
-        let startX, startY, imgX = 0, imgY = 0;
+        let isZoomed = false;
 
         // Wait for the image to load to get its dimensions
         img.onload = function() {
@@ -49,52 +48,27 @@
             const scaleY = containerRect.height / imgRect.height;
             scale = Math.min(scaleX, scaleY);
 
-            img.style.transform = `translate(${imgX}px, ${imgY}px) scale(${scale})`;
+            img.style.transform = `scale(${scale})`;
         };
 
-        window.addEventListener('wheel', function(e) {
-            if (e.ctrlKey) {
-                e.preventDefault();
-                if (e.deltaY < 0) {
-                    scale *= 1.1;
-                } else {
-                    scale /= 1.1;
-                }
-                img.style.transform = `translate(${imgX}px, ${imgY}px) scale(${scale})`;
+        container.addEventListener('click', function(e) {
+            const containerRect = container.getBoundingClientRect();
+            const imgRect = img.getBoundingClientRect();
+            const clickX = e.clientX - containerRect.left;
+            const clickY = e.clientY - containerRect.top;
+
+            if (!isZoomed) {
+                const zoomFactor = 2;
+                const offsetX = (clickX - containerRect.width / 2) * (zoomFactor - 1);
+                const offsetY = (clickY - containerRect.height / 2) * (zoomFactor - 1);
+                img.style.transform = `translate(${-offsetX}px, ${-offsetY}px) scale(${scale * zoomFactor})`;
+                container.style.cursor = 'zoom-out';
+            } else {
+                img.style.transform = `scale(${scale})`;
+                container.style.cursor = 'zoom-in';
             }
-        });
 
-        container.addEventListener('mousedown', function(e) {
-            isDragging = true;
-            startX = e.clientX - imgX;
-            startY = e.clientY - imgY;
-            container.style.cursor = 'grabbing';
-        });
-
-        container.addEventListener('mousemove', function(e) {
-            if (isDragging) {
-                imgX = e.clientX - startX;
-                imgY = e.clientY - startY;
-                img.style.transform = `translate(${imgX}px, ${imgY}px) scale(${scale})`;
-            }
-        });
-
-        container.addEventListener('mouseup', function() {
-            isDragging = false;
-            container.style.cursor = 'grab';
-        });
-
-        container.addEventListener('mouseleave', function() {
-            if (isDragging) {
-                isDragging = false;
-                container.style.cursor = 'grab';
-            }
-        });
-
-        container.addEventListener('mouseenter', function() {
-            if (isDragging) {
-                container.style.cursor = 'grabbing';
-            }
+            isZoomed = !isZoomed;
         });
     </script>
 </body>
