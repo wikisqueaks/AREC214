@@ -106,7 +106,7 @@
 
         window.addEventListener('keydown', function(e) {
             if (isZoomed) {
-                const moveAmount = 20;
+                const moveAmount = 50; // Increase move amount for more aggressive response
                 switch (e.key) {
                     case 'ArrowLeft':
                         imgX += moveAmount;
