@@ -58,10 +58,12 @@
             const clickY = e.clientY - containerRect.top;
 
             if (!isZoomed) {
-                const zoomFactor = 2.5;
+                const zoomFactor = 2;
                 const offsetX = (clickX - containerRect.width / 2) * (zoomFactor - 1);
                 const offsetY = (clickY - containerRect.height / 2) * (zoomFactor - 1);
-                img.style.transform = `translate(${-offsetX}px, ${-offsetY}px) scale(${scale * zoomFactor})`;
+                const translateX = (containerRect.width / 2 - clickX) * (zoomFactor - 1);
+                const translateY = (containerRect.height / 2 - clickY) * (zoomFactor - 1);
+                img.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale * zoomFactor})`;
                 container.style.cursor = 'zoom-out';
             } else {
                 img.style.transform = `scale(${scale})`;
