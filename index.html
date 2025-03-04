@@ -17,9 +17,11 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
+            cursor: grab;
         }
         #zoomable-image {
             transition: transform 0.2s;
+            transform-origin: center center;
         }
     </style>
 </head>
@@ -29,9 +31,12 @@
     </div>
 
     <script>
+        const container = document.getElementById('container');
         const img = document.getElementById('zoomable-image');
         let scale = 1;
-        
+        let isDragging = false;
+        let startX, startY, imgX = 0, imgY = 0;
+
         window.addEventListener('wheel', function(e) {
             if (e.ctrlKey) {
                 e.preventDefault();
@@ -40,9 +45,17 @@
                 } else {
                     scale /= 1.1;
                 }
-                img.style.transform = `scale(${scale})`;
+                img.style.transform = `scale(${scale}) translate(${imgX}px, ${imgY}px)`;
             }
         });
-    </script>
-</body>
-</html>
+
+        container.addEventListener('mousedown', function(e) {
+            isDragging = true;
+            startX = e.clientX - imgX;
+            startY = e.clientY - imgY;
+            container.style.cursor = 'grabbing';
+        });
+
+        container.addEventListener('mousemove', function(e) {
+            if (isDragging) {
+                imgX = e.clientX ▋
