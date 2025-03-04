@@ -5,24 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fundamental Relationships in Linear Algebra</title>
     <style>
-        body { 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-            margin: 0; 
-            background-color: #f0f0f0; 
-            overflow: auto; 
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            overflow: hidden;
         }
-        img { 
-            max-width: 90vw; 
-            max-height: 90vh; 
-            width: auto; 
-            height: auto; 
+        .container {
+            overflow: scroll;
+            width: 90vw;
+            height: 90vh;
+        }
+        img {
+            width: 100%;
+            height: auto;
         }
     </style>
 </head>
 <body>
-    <img src="img/flowchart.png" alt="Fundamental Relationships in Linear Algebra">
+    <div class="container">
+        <img src="img/flowchart.png" alt="Fundamental Relationships in Linear Algebra">
+    </div>
 </body>
 </html>
