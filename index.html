@@ -85,8 +85,16 @@
         });
 
         container.addEventListener('mouseleave', function() {
-            isDragging = false;
-            container.style.cursor = 'grab';
+            if (isDragging) {
+                isDragging = false;
+                container.style.cursor = 'grab';
+            }
+        });
+
+        container.addEventListener('mouseenter', function() {
+            if (isDragging) {
+                container.style.cursor = 'grabbing';
+            }
         });
     </script>
 </body>
