@@ -11,20 +11,22 @@
             align-items: center; 
             height: 100vh; 
             margin: 0; 
-            background-color: #f0f0f0;
-            overflow: auto; /* Allows scrolling if needed */
+            background-color: #f0f0f0; 
+            overflow: auto; 
         }
         img { 
-            max-width: 90vw; 
-            max-height: 90vh; 
-            width: auto; 
+            max-width: 100%; 
             height: auto; 
-            object-fit: contain;
-            display: block;
+            cursor: zoom-in;
+            transition: transform 0.3s ease-in-out;
+        }
+        img.zoomed { 
+            transform: scale(2); 
+            cursor: zoom-out;
         }
     </style>
 </head>
 <body>
-    <img src="img/flowchart.svg" alt="Fundamental Relationships in Linear Algebra">
+    <img src="img/flowchart.svg" alt="Fundamental Relationships in Linear Algebra" onclick="this.classList.toggle('zoomed')">
 </body>
 </html>
