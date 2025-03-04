@@ -58,7 +58,7 @@
             const clickY = e.clientY - containerRect.top;
 
             if (!isZoomed) {
-                const zoomFactor = 2;
+                const zoomFactor = 3;
                 const offsetX = (clickX - containerRect.width / 2) * (zoomFactor - 1);
                 const offsetY = (clickY - containerRect.height / 2) * (zoomFactor - 1);
                 img.style.transform = `translate(${-offsetX}px, ${-offsetY}px) scale(${scale * zoomFactor})`;
