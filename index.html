@@ -39,6 +39,19 @@
         let isDragging = false;
         let startX, startY, imgX = 0, imgY = 0;
 
+        // Wait for the image to load to get its dimensions
+        img.onload = function() {
+            const containerRect = container.getBoundingClientRect();
+            const imgRect = img.getBoundingClientRect();
+
+            // Calculate initial scale to fit the image within the container
+            const scaleX = containerRect.width / imgRect.width;
+            const scaleY = containerRect.height / imgRect.height;
+            scale = Math.min(scaleX, scaleY);
+
+            img.style.transform = `translate(${imgX}px, ${imgY}px) scale(${scale})`;
+        };
+
         window.addEventListener('wheel', function(e) {
             if (e.ctrlKey) {
                 e.preventDefault();
